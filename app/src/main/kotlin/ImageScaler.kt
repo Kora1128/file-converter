@@ -1,4 +1,6 @@
 import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
@@ -28,6 +30,27 @@ object ImageScaler {
         }
 
         return outputFile
+    }
+
+    fun reduceImageFileusingStreams(
+        inputFile: ByteArray,
+        fileType: String,
+    ): ByteArray {
+        val inputStream = ByteArrayInputStream(inputFile)
+        val outputStream = ByteArrayOutputStream()
+
+        try {
+            val bufferedImage = ImageIO.read(inputStream)
+            var quality = 0.55f
+
+            val scaledImage = scaleImage(bufferedImage, quality)
+            ImageIO.write(scaledImage, fileType, outputStream)
+            scaledImage.flush()
+        } catch (e: Exception) {
+            throw IOException("Failed to reduce image file size: ${e.message}")
+        }
+
+        return outputStream.toByteArray()
     }
 
     fun scaleImage(

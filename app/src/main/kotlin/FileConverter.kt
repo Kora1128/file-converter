@@ -29,4 +29,27 @@ object FileConverter {
             throw IOException("File processing failed: Unsupported file format")
         }
     }
+
+    fun processFileUsingStreams(
+        supportedFileTypes: List<String>,
+        inputFile: ByteArray,
+        extension: String,
+    ): ByteArray {
+        val processedFile =
+            if (supportedFileTypes.contains(extension)) {
+                inputFile
+            } else {
+                // Convert unsupported file types to PDF
+                PdfUtils.convertToPdfusingStream(inputFile)
+            }
+
+        // Step 2: Reduce file size based on type
+        return if (extension in listOf("jpeg", "png", "gif", "jpg")) {
+            ImageScaler.reduceImageFileusingStreams(processedFile, extension)
+        } else if (extension == "pdf") {
+            PdfUtils.compressPdfUsingStream(processedFile)
+        } else {
+            throw IOException("File processing failed: Unsupported file format")
+        }
+    }
 }
