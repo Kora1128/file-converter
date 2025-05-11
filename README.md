@@ -13,3 +13,9 @@ A Kotlin-based command-line application designed to convert files between variou
 
 `./gradlew build`
 
+## 🔧 Dependencies
+
+This project uses the following libraries:
+
+- [`iText 7 Core`](https://github.com/itext/itext7) – for creating and manipulating PDFs.
+- [`Apache PDFBox`](https://pdfbox.apache.org/) – for extracting content from PDFs and other operations.
